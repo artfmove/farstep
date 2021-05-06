@@ -18,7 +18,7 @@ class _AuthMethodState extends State<AuthMethod> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Padding(
-      padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+      padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
       child: FlatButton(
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(40.0),
@@ -36,7 +36,8 @@ class _AuthMethodState extends State<AuthMethod> {
         },
         child: Container(
           width: double.infinity,
-          height: size.width > 230 ? 55 : 35,
+          //padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+          height: size.width > 360 ? 55 : 45,
           child: isSelected
               ? Center(
                   child: PlatformCircularProgressIndicator(),
@@ -48,7 +49,7 @@ class _AuthMethodState extends State<AuthMethod> {
                     ),
                     Image(
                       image: AssetImage(widget.imagePath),
-                      height: size.width > 230 ? 35 : 15,
+                      height: size.width > 360 ? 40 : 30,
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 10),

@@ -52,7 +52,10 @@ class _ResetPasswordState extends State<ResetPassword> {
 
     return PlatformScaffold(
       appBar: PlatformAppBar(
-        title: Text(loc.changingPassword),
+        title: Text(
+          loc.changingPassword,
+          style: Style().appBar(context),
+        ),
       ),
       body: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),

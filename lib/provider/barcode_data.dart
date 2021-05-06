@@ -3,6 +3,8 @@ import 'package:cloud_functions/cloud_functions.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../model/coupon.dart';
 
+import 'package:firebase_auth/firebase_auth.dart';
+
 class BarcodeData with ChangeNotifier {
   FirebaseFunctions functions = FirebaseFunctions.instance;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -24,7 +26,9 @@ class BarcodeData with ChangeNotifier {
         FirebaseFunctions.instanceFor(region: 'europe-west1').httpsCallable(
       'currentTime',
     );
-    final results = await callable().catchError((e) {});
+    final results = await callable().catchError((e) {
+      print(e);
+    });
 
     DateTime now =
         new DateTime.fromMillisecondsSinceEpoch(results.data['response']);
@@ -37,6 +41,7 @@ class BarcodeData with ChangeNotifier {
         .doc(coupon.couponId)
         .get()
         .then((snapshot) {
+      exist = true;
       final doc = snapshot.data();
       if (doc['used'] == false) {
         used = false;
@@ -74,6 +79,7 @@ class BarcodeData with ChangeNotifier {
   }
 
   Future<Map> generateBarcode(String userId, Coupon coupon) async {
+    await FirebaseAuth.instance.currentUser.reload();
     final check = await checkBarcode(userId, coupon);
     if (check['exist'] == true) return {'isSuccess': false};
     if (!await couponExist(coupon.couponId)) return {'isSuccess': false};
@@ -89,8 +95,10 @@ class BarcodeData with ChangeNotifier {
     }).catchError((e) {
       isSuccessFunction = false;
     });
+    print(results.data);
 
-    if (!isSuccessFunction) return {'isSuccess': false};
+    if (!isSuccessFunction || results.data['isSuccess'] == false)
+      return {'isSuccess': false};
 
     return {
       'barcodeId': results.data['barcodeId'],

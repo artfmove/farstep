@@ -14,7 +14,7 @@ class Timer extends StatelessWidget {
         endWidget: Text(text, style: Style().text4(context)),
         textStyle: TextStyle(
           color: color,
-          fontSize: 18,
+          fontSize: MediaQuery.of(context).size.width > 360 ? 18 : 13,
         ),
         endTime: endTime);
   }

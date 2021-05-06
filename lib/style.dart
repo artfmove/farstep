@@ -10,13 +10,13 @@ class Style {
     return InputDecoration(
       errorMaxLines: 5,
       labelStyle: TextStyle(
-        fontSize: MediaQuery.of(context).size.width > 230 ? 13 : 9,
+        fontSize: MediaQuery.of(context).size.width > 360 ? 13 : 9,
       ),
       contentPadding: EdgeInsets.fromLTRB(
           12,
-          MediaQuery.of(context).size.width > 230 ? 12 : 6,
+          MediaQuery.of(context).size.width > 360 ? 12 : 6,
           12,
-          MediaQuery.of(context).size.width > 230 ? 12 : 6),
+          MediaQuery.of(context).size.width > 360 ? 12 : 6),
       labelText: labelTextStr,
       focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(
@@ -46,7 +46,7 @@ class Style {
 
   TextStyle placeInfo1(context) {
     return TextStyle(
-        fontSize: MediaQuery.of(context).size.width > 230 ? 15 : 11,
+        fontSize: MediaQuery.of(context).size.width > 360 ? 15 : 11,
         color: MediaQuery.of(context).platformBrightness == Brightness.dark
             ? Colors.grey
             : Colors.grey[600]);
@@ -54,80 +54,80 @@ class Style {
 
   TextStyle placeInfo2(context) {
     return TextStyle(
-        fontSize: MediaQuery.of(context).size.width > 230 ? 15 : 11,
+        fontSize: MediaQuery.of(context).size.width > 360 ? 15 : 11,
         color: color);
   }
 
   TextStyle text1(context) {
     return TextStyle(
-        fontSize: MediaQuery.of(context).size.width > 230 ? 28 : 20,
+        fontSize: MediaQuery.of(context).size.width > 360 ? 28 : 20,
         color: color);
   }
 
   TextStyle text2(context) {
     return TextStyle(
-        fontSize: MediaQuery.of(context).size.width > 230 ? 25 : 19,
+        fontSize: MediaQuery.of(context).size.width > 360 ? 25 : 19,
         color: color);
   }
 
   TextStyle text3(context) {
     return TextStyle(
-        fontSize: MediaQuery.of(context).size.width > 230 ? 20 : 16,
+        fontSize: MediaQuery.of(context).size.width > 360 ? 20 : 16,
         color: color);
   }
 
   TextStyle text4(context) {
     return TextStyle(
-        fontSize: MediaQuery.of(context).size.width > 230 ? 16 : 12,
+        fontSize: MediaQuery.of(context).size.width > 360 ? 16 : 12,
         color: color);
   }
 
   TextStyle text5(context) {
     return TextStyle(
-        fontSize: MediaQuery.of(context).size.width > 230 ? 14 : 10,
+        fontSize: MediaQuery.of(context).size.width > 360 ? 14 : 10,
         color: color);
   }
 
   TextStyle text6(context) {
     return TextStyle(
-        fontSize: MediaQuery.of(context).size.width > 230 ? 12 : 8,
+        fontSize: MediaQuery.of(context).size.width > 360 ? 12 : 8,
         color: color);
   }
 
   TextStyle text7(context) {
     return TextStyle(
-        fontSize: MediaQuery.of(context).size.width > 230 ? 10 : 7,
+        fontSize: MediaQuery.of(context).size.width > 360 ? 10 : 7,
         color: color);
   }
 
   TextStyle appBar(context) {
     return TextStyle(
-      fontSize: MediaQuery.of(context).size.width > 230 ? 18 : 15,
+      fontSize: MediaQuery.of(context).size.width > 360 ? 18 : 15,
       color: Theme.of(context).textTheme.bodyText1.color,
     );
   }
 
   TextStyle dialogTitle(context) {
     return TextStyle(
-      fontSize: MediaQuery.of(context).size.width > 230 ? 17 : 13,
+      fontSize: MediaQuery.of(context).size.width > 360 ? 17 : 13,
     );
   }
 
   TextStyle dialogContent(context) {
     return TextStyle(
-      fontSize: MediaQuery.of(context).size.width > 230 ? 14 : 11,
+      fontSize: MediaQuery.of(context).size.width > 360 ? 14 : 11,
     );
   }
 
   TextStyle dialogOk(context) {
     return TextStyle(
-        fontSize: MediaQuery.of(context).size.width > 230 ? 16 : 12,
+        fontSize: MediaQuery.of(context).size.width > 360 ? 16 : 12,
         color: Colors.red);
   }
 
   TextStyle dialogCancel(context) {
     return TextStyle(
-        fontSize: MediaQuery.of(context).size.width > 230 ? 16 : 12,
+        fontSize: MediaQuery.of(context).size.width > 360 ? 16 : 12,
         color: Theme.of(context).textTheme.bodyText1.color);
   }
 }

@@ -35,7 +35,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen>
   @override
   void initState() {
     _animController =
-        AnimationController(duration: Duration(milliseconds: 230), vsync: this);
+        AnimationController(duration: Duration(milliseconds: 360), vsync: this);
     _slideAnimation = Tween<Offset>(begin: Offset(0, -0.7), end: Offset(0, 0.5))
         .animate(CurvedAnimation(
             curve: Curves.fastOutSlowIn, parent: _animController));
@@ -169,15 +169,17 @@ class _AuthenticationScreenState extends State<AuthenticationScreen>
         onTap: () => FocusScope.of(context).unfocus(),
         child: Material(
           child: Stack(
-            alignment: Alignment.center,
+            alignment:
+                size.width > 360 ? Alignment.center : Alignment.topCenter,
             children: [
               SingleChildScrollView(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
                       alignment: Alignment.center,
-                      padding: const EdgeInsets.fromLTRB(70, 0, 70, 0),
+                      padding: size.width > 360
+                          ? const EdgeInsets.fromLTRB(70, 0, 70, 0)
+                          : const EdgeInsets.fromLTRB(70, 50, 70, 0),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -198,8 +200,8 @@ class _AuthenticationScreenState extends State<AuthenticationScreen>
                             onPressed: () => setState(() {
                               isMailSelected = !isMailSelected;
                             }),
-                            child: Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                            child: Container(
+                              height: size.width > 360 ? 55 : 45,
                               child: Row(
                                 children: [
                                   SizedBox(
@@ -208,7 +210,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen>
                                   Image(
                                     image:
                                         AssetImage('./assets/images/mail.png'),
-                                    height: size.height > 650 ? 30 : 15,
+                                    height: size.height > 360 ? 40 : 30,
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(left: 10),
@@ -302,7 +304,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen>
                     ),
                     if (isMailSelected)
                       Container(
-                        padding: EdgeInsets.only(top: 30),
+                        padding: EdgeInsets.only(top: 10),
                         child: SlideTransition(
                             position: _slideAnimation,
                             child: TextButton(
@@ -319,37 +321,39 @@ class _AuthenticationScreenState extends State<AuthenticationScreen>
                   ],
                 ),
               ),
-              Container(
-                padding: EdgeInsets.fromLTRB(10, 0, 10, 20),
-                alignment: Alignment.bottomCenter,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    GestureDetector(
-                      onTap: () => toggleAuthMode(),
-                      child: Container(
-                        width: size.width * 0.4,
-                        child: Text(
-                          isLogin ? loc.orCreate : loc.orLogin,
-                          textAlign: TextAlign.center,
-                          maxLines: 3,
-                          style: Style().text4(context),
-                        ),
+              MediaQuery.of(context).viewInsets.bottom == 0
+                  ? Container(
+                      padding: EdgeInsets.fromLTRB(10, 0, 10, 20),
+                      alignment: Alignment.bottomCenter,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          GestureDetector(
+                            onTap: () => toggleAuthMode(),
+                            child: Container(
+                              width: size.width * 0.4,
+                              child: Text(
+                                isLogin ? loc.orCreate : loc.orLogin,
+                                textAlign: TextAlign.center,
+                                maxLines: 3,
+                                style: Style().text4(context),
+                              ),
+                            ),
+                          ),
+                          TextButton(
+                            child: Text(
+                              loc.forgotPassword,
+                              style: Style(color: Colors.red).text4(context),
+                            ),
+                            onPressed: () => Navigator.of(context).push(
+                                platformPageRoute(
+                                    context: context,
+                                    builder: (_) => ResetPassword())),
+                          ),
+                        ],
                       ),
-                    ),
-                    TextButton(
-                      child: Text(
-                        loc.forgotPassword,
-                        style: Style(color: Colors.red).text4(context),
-                      ),
-                      onPressed: () => Navigator.of(context).push(
-                          platformPageRoute(
-                              context: context,
-                              builder: (_) => ResetPassword())),
-                    ),
-                  ],
-                ),
-              )
+                    )
+                  : Container()
             ],
           ),
         ),

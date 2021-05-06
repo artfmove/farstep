@@ -28,10 +28,10 @@ class ButtonOutlineSort extends StatelessWidget {
           text,
           style: TextStyle(
               fontSize: currentType == null
-                  ? MediaQuery.of(context).size.width > 230
+                  ? MediaQuery.of(context).size.width > 360
                       ? 14
                       : 10
-                  : MediaQuery.of(context).size.width > 230
+                  : MediaQuery.of(context).size.width > 360
                       ? 16
                       : 12),
         ),

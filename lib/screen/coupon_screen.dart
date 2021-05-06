@@ -133,72 +133,72 @@ class _CouponScreenState extends State<CouponScreen> {
           Align(
             alignment: Alignment.bottomCenter,
             child: ConstrainedBox(
-              constraints: new BoxConstraints(
-                minHeight: 100.0,
+              constraints: BoxConstraints(
+                minHeight: 75.0,
                 minWidth: double.infinity,
               ),
-              child: Container(
-                color:
-                    MediaQuery.platformBrightnessOf(context) == Brightness.dark
-                        ? Colors.black
-                        : Colors.grey[200],
-                child: Data().checkIfAnonymous()
-                    ? CupertinoButton(
-                        onPressed: () => Data().showAuthAlert(context),
-                        child: Text(
-                          loc.getCoupon,
-                          style: Style(color: Colors.red).text2(context),
-                        ))
-                    : FutureBuilder(
-                        future: barcode,
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                                  ConnectionState.waiting ||
-                              snapshot.hasError)
+              child: Data().checkIfAnonymous()
+                  ? CupertinoButton(
+                      onPressed: () => Data().showAuthAlert(context),
+                      child: Text(
+                        loc.getCoupon,
+                        style: Style(color: Colors.red).text2(context),
+                      ))
+                  : FutureBuilder(
+                      future: barcode,
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                                ConnectionState.waiting ||
+                            snapshot.hasError)
+                          return Container(
+                              color: MediaQuery.platformBrightnessOf(context) ==
+                                      Brightness.dark
+                                  ? Colors.black
+                                  : Colors.grey[200],
+                              padding: EdgeInsets.only(bottom: 20),
+                              alignment: Alignment.bottomCenter,
+                              child: PlatformCircularProgressIndicator());
+                        else {
+                          if (snapshot.data['exist'] &&
+                              !snapshot.data['isExpired'])
+                            return BarcodeItem(snapshot.data['barcodeUsedId'],
+                                snapshot.data['expirationSeconds']);
+                          else if (snapshot.data['used'])
                             return Container(
-                                padding: EdgeInsets.only(bottom: 20),
-                                alignment: Alignment.bottomCenter,
-                                child: PlatformCircularProgressIndicator());
-                          else {
-                            if (snapshot.data['exist'] &&
-                                !snapshot.data['isExpired'])
-                              return BarcodeItem(snapshot.data['barcodeUsedId'],
-                                  snapshot.data['expirationSeconds']);
-                            else if (snapshot.data['used'])
-                              return Container(
-                                height: 100,
-                                padding: EdgeInsets.only(bottom: 30),
-                                child: Column(
-                                  children: [
-                                    Timer(
-                                        AppLocalizations.of(context)
-                                            .couponUpdateToUse,
-                                        snapshot.data['restartSeconds'],
-                                        Theme.of(context)
-                                            .textTheme
-                                            .bodyText1
-                                            .color),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    Text(
-                                      AppLocalizations.of(context).couponUsed,
-                                      style: Style(color: Colors.red)
-                                          .text2(context),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ],
-                                ),
-                              );
-                            else
-                              return Container(
-                                width: double.infinity,
-                                child: BarcodeButton(
-                                    context, userId, widget.coupon),
-                              );
-                          }
-                        }),
-              ),
+                              height: 100,
+                              padding: EdgeInsets.only(bottom: 30),
+                              child: Column(
+                                children: [
+                                  Timer(
+                                      AppLocalizations.of(context)
+                                          .couponUpdateToUse,
+                                      snapshot.data['restartSeconds'],
+                                      Theme.of(context)
+                                          .textTheme
+                                          .bodyText1
+                                          .color),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(
+                                    AppLocalizations.of(context).couponUsed,
+                                    style:
+                                        Style(color: Colors.red).text2(context),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
+                              ),
+                            );
+                          else
+                            return Container(
+                              //height: 50,
+                              color: Theme.of(context).scaffoldBackgroundColor,
+                              width: double.infinity,
+                              child:
+                                  BarcodeButton(context, userId, widget.coupon),
+                            );
+                        }
+                      }),
             ),
           ),
         ],

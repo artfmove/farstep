@@ -5,6 +5,7 @@ import '../screen/landing.dart';
 import '../screen/auth_verify.dart';
 import '../widget/loading_dialog.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Auth with ChangeNotifier {
   FirebaseAuth auth = FirebaseAuth.instance;
@@ -18,20 +19,26 @@ class Auth with ChangeNotifier {
     await getCurrentUser.reload().catchError((e) {
       verified = false;
     });
-    if (getCurrentUser != null && getCurrentUser.emailVerified)
+    if (getCurrentUser != null && getCurrentUser.emailVerified) {
       verified = true;
-    else
+    } else
       verified = false;
     return verified;
   }
 
-  bool checkNotYetVerified() {
-    if (getCurrentUser != null &&
-        !getCurrentUser.isAnonymous &&
-        !getCurrentUser.emailVerified)
-      return true;
+  Widget authentication() {
+    if (FirebaseAuth.instance.currentUser != null &&
+            FirebaseAuth.instance.currentUser.emailVerified ||
+        (FirebaseAuth.instance.currentUser != null &&
+            FirebaseAuth.instance.currentUser.isAnonymous))
+      return Landing();
+    else if (FirebaseAuth.instance.currentUser != null &&
+        !FirebaseAuth.instance.currentUser.emailVerified)
+      return AuthVerify(true);
+    else if (FirebaseAuth.instance.currentUser == null)
+      return AuthenticationScreen();
     else
-      return false;
+      return AuthenticationScreen();
   }
 
   Future<bool> sendEmail(context) async {
@@ -45,26 +52,36 @@ class Auth with ChangeNotifier {
   Future<void> subscribeTopic() async {
     await FirebaseMessaging.instance
         .unsubscribeFromTopic('allUsersru')
-        .catchError((e) {});
+        .catchError((e) {
+      print(e);
+    });
     await FirebaseMessaging.instance
         .unsubscribeFromTopic('allUsersuk')
-        .catchError((e) {});
+        .catchError((e) {
+      print(e);
+    });
     await FirebaseMessaging.instance
-        .subscribeToTopic('allUsers${FirebaseAuth.instance.languageCode}');
+        .subscribeToTopic('allUsers${FirebaseAuth.instance.languageCode}')
+        .catchError((e) {
+      print(e);
+    });
   }
 
   Future<String> signUpWithEmail(
       String email, String password, String confirmedPassword, context) async {
     String errorMessage = 'success';
-    UserCredential user;
+
     await auth
         .createUserWithEmailAndPassword(email: email, password: password)
         .catchError((e) {
       errorMessage = e.code;
     });
-    if (errorMessage != 'success' || user == null) return errorMessage;
 
-    await sendEmail(context).catchError((e) => null);
+    if (errorMessage != 'success') return errorMessage;
+
+    await sendEmail(context).catchError((e) {
+      print(e);
+    });
 
     if (errorMessage == 'success') {
       await subscribeTopic();
@@ -85,6 +102,18 @@ class Auth with ChangeNotifier {
     });
     await subscribeTopic();
     return errorMessage;
+  }
+
+  Future<bool> continueAuth() async {
+    await FirebaseAuth.instance.currentUser.reload();
+    bool success = true;
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser.uid)
+        .set({'id': FirebaseAuth.instance.currentUser.uid}).catchError((e) {
+      success = false;
+    });
+    return success;
   }
 
   Future<bool> signOut(BuildContext context) async {

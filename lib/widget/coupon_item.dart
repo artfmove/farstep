@@ -52,13 +52,13 @@ class _CouponItemState extends State<CouponItem> {
                                 text: '${widget.coupon.price[0]}${loc.value}',
                                 style: new TextStyle(
                                   color: Colors.grey,
-                                  fontSize: size.width > 230 ? 22 : 16,
+                                  fontSize: size.width > 360 ? 22 : 16,
                                   decoration: TextDecoration.lineThrough,
                                 ),
                               ),
                               new TextSpan(
                                 style: TextStyle(
-                                    fontSize: size.width > 230 ? 24 : 18,
+                                    fontSize: size.width > 360 ? 24 : 18,
                                     color: Colors.red),
                                 text: ' ${widget.coupon.price[1]}${loc.value}',
                               ),

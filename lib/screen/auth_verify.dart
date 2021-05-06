@@ -1,6 +1,8 @@
 import '../common.dart';
 import '../provider/auth.dart';
 import '../widget/loading_dialog.dart';
+import './landing.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AuthVerify extends StatefulWidget {
   final bool isAlreadySigned;
@@ -15,8 +17,9 @@ class _AuthVerifyState extends State<AuthVerify> {
   void _tryAuth() async {
     LoadingDialog.showLoad(context);
     final isVerified = await Auth().checkEmailVerified();
-    LoadingDialog.dispLoad();
-    if (!isVerified)
+
+    if (!isVerified) {
+      LoadingDialog.dispLoad();
       showPlatformDialog(
           barrierDismissible: true,
           context: context,
@@ -28,26 +31,34 @@ class _AuthVerifyState extends State<AuthVerify> {
                 content:
                     Text(loc.emailNotVerified, style: Style().text4(context)),
                 actions: [
-                  TextButton(
+                  PlatformDialogAction(
                       child: Text(
                         AppLocalizations.of(context).cancel,
                         textAlign: TextAlign.center,
-                        style: Style().text3(context),
+                        style: Style().dialogCancel(context),
                       ),
                       onPressed: () async {
                         Navigator.of(ctx).pop();
                       }),
-                  TextButton(
+                  PlatformDialogAction(
                       child: Text(loc.sendAgainVerify,
-                          style: Style(color: Colors.red).text3(context)),
+                          style: Style().dialogOk(context)),
                       onPressed: () async {
                         Auth().sendEmail(context);
                         Navigator.of(ctx).pop();
                       }),
                 ],
               ));
-    else
-      Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
+    } else {
+      final response = await Auth().continueAuth();
+      if (!response)
+        LoadingDialog.dispLoad();
+      else
+        Navigator.pushAndRemoveUntil(
+            context,
+            platformPageRoute(context: context, builder: (_) => Landing()),
+            (_) => false);
+    }
   }
 
   void _breakConfirmation() async {
@@ -68,7 +79,7 @@ class _AuthVerifyState extends State<AuthVerify> {
         color: color,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(40.0),
-            side: BorderSide(color: Colors.grey[300])),
+            side: BorderSide(color: Colors.grey[500])),
         onPressed: () => function(),
         child: Container(
           child: Text(
@@ -81,13 +92,14 @@ class _AuthVerifyState extends State<AuthVerify> {
 
   @override
   Widget build(BuildContext context) {
+    print(MediaQuery.of(context).size.width);
     loc = AppLocalizations.of(context);
     final width = MediaQuery.of(context).size.width;
     return PlatformScaffold(
       appBar: PlatformAppBar(
         title: Text(
           loc.confirmation,
-          style: Style().text2(context),
+          style: Style().appBar(context),
         ),
       ),
       body: Stack(
@@ -109,15 +121,18 @@ class _AuthVerifyState extends State<AuthVerify> {
                     height: 20,
                   ),
                   outlButton(Colors.red, _tryAuth, loc.alreadyAccepted,
-                      width > 230 ? 18.0 : 13.0)
+                      width > 360 ? 15.0 : 11.0)
                 ],
               ),
             ),
           ),
           Padding(
             padding: const EdgeInsets.only(bottom: 18.0),
-            child: outlButton(Colors.black, _breakConfirmation,
-                loc.breakConfirmation, width > 230 ? 14.0 : 11.0),
+            child: outlButton(
+                Theme.of(context).scaffoldBackgroundColor,
+                _breakConfirmation,
+                loc.breakConfirmation,
+                width > 360 ? 14.0 : 11.0),
           ),
         ],
       ),

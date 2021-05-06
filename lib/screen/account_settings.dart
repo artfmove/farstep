@@ -12,17 +12,18 @@ class AccountSettings extends StatelessWidget {
         builder: (ctx) => PlatformAlertDialog(
               title: Text(
                 loc.confirmAction,
-                style: Style().text4(context),
+                style: Style().dialogTitle(context),
               ),
-              content:
-                  Text(loc.confirmLogOutAsk, style: Style().text5(context)),
+              content: Text(loc.confirmLogOutAsk,
+                  style: Style().dialogContent(context)),
               actions: [
                 PlatformDialogAction(
-                    child: Text(loc.cancel, style: Style().text4(context)),
+                    child:
+                        Text(loc.cancel, style: Style().dialogCancel(context)),
                     onPressed: () => Navigator.pop(ctx)),
                 PlatformDialogAction(
                     child: Text(loc.logOut,
-                        style: Style(color: Colors.red).text4(context)),
+                        style: Style(color: Colors.red).dialogOk(context)),
                     onPressed: () {
                       Auth().signOut(context);
                       Navigator.pop(ctx);
@@ -55,9 +56,9 @@ class AccountSettings extends StatelessWidget {
                               context: context,
                               builder: (ctx) => PlatformAlertDialog(
                                     title: Text(loc.changingPassword,
-                                        style: Style().text4(context)),
+                                        style: Style().dialogTitle(context)),
                                     content: Text(loc.sendChangePassword,
-                                        style: Style().text5(context)),
+                                        style: Style().dialogContent(context)),
                                     actions: [
                                       PlatformDialogAction(
                                         onPressed: () =>

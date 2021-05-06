@@ -2,15 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import './common.dart';
-import './screen/landing.dart';
-import './screen/authentication_screen.dart';
-import './screen/auth_verify.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import './provider/data.dart';
 import './provider/auth.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import './screen/scanner_barcodes_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -44,8 +39,13 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
             accentColor: Colors.red[400],
             backgroundColor: Colors.white,
             canvasColor: Colors.white,
-            appBarTheme: AppBarTheme(color: Colors.grey[100]),
-            splashColor: Colors.grey[200],
+            appBarTheme: AppBarTheme(
+              color: Colors.grey[100],
+              iconTheme: IconThemeData(
+                color: Colors.black,
+              ),
+            ),
+            splashColor: Colors.grey[900],
             iconTheme: IconThemeData(color: Colors.red),
             bottomNavigationBarTheme: BottomNavigationBarThemeData(
                 selectedItemColor: Colors.red,
@@ -62,7 +62,12 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
             splashColor: Colors.grey[200],
             scaffoldBackgroundColor: Colors.black,
             iconTheme: IconThemeData(color: Colors.red),
-            appBarTheme: AppBarTheme(color: Colors.grey[900]),
+            appBarTheme: AppBarTheme(
+              color: Colors.grey[900],
+              iconTheme: IconThemeData(
+                color: Colors.grey[200],
+              ),
+            ),
             bottomNavigationBarTheme: BottomNavigationBarThemeData(
                 selectedItemColor: Colors.red,
                 unselectedItemColor: Colors.grey),
@@ -132,17 +137,10 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                 );
               },
               cupertino: (_, __) => new CupertinoAppData(
-                    routes: {
-                      '/scanner': (context) => ScannerBarcodesScreen(),
-                    },
                     debugShowCheckedModeBanner: false,
                     theme: cupertinoTheme,
                   ),
-              home: FirebaseAuth.instance.currentUser != null
-                  ? Landing()
-                  : Auth().checkNotYetVerified()
-                      ? AuthVerify(true)
-                      : AuthenticationScreen()),
+              home: Auth().authentication()),
         ));
   }
 }
