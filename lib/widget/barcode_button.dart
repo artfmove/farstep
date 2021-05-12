@@ -62,8 +62,7 @@ class _BarcodeButtonState extends State<BarcodeButton> {
                     loc.getCoupon,
                   ),
                   content: Text(
-                    loc.couponAlertActive,
-                  ),
+                      '${loc.couponAlertActive}${widget.coupon.expirationMinutes}${loc.couponAlertMinutes}'),
                   actions: [
                     CupertinoButton(
                       child: Text(

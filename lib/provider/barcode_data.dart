@@ -123,6 +123,8 @@ class BarcodeData with ChangeNotifier {
       message = 'error';
     });
 
+    print(results.data);
+
     if (results.data['message'] == 'success') {
       List<FadeInImage> image = [
         FadeInImage.assetNetwork(

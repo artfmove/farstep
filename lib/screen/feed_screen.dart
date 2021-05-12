@@ -38,7 +38,10 @@ class _FeedScreenState extends State<FeedScreen> {
             controller: _refreshController,
             onRefresh: _onRefresh,
             child: ListView.builder(
-              itemBuilder: (_, i) => FeedItem(list[i]),
+              itemBuilder: (_, i) => FeedItem(
+                list[i],
+                key: UniqueKey(),
+              ),
               padding: EdgeInsets.all(0),
               itemCount: list.length,
             )),

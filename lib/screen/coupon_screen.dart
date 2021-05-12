@@ -138,12 +138,15 @@ class _CouponScreenState extends State<CouponScreen> {
                 minWidth: double.infinity,
               ),
               child: Data().checkIfAnonymous()
-                  ? CupertinoButton(
-                      onPressed: () => Data().showAuthAlert(context),
-                      child: Text(
-                        loc.getCoupon,
-                        style: Style(color: Colors.red).text2(context),
-                      ))
+                  ? Container(
+                      color: Theme.of(context).scaffoldBackgroundColor,
+                      child: CupertinoButton(
+                          onPressed: () => Data().showAuthAlert(context),
+                          child: Text(
+                            loc.getCoupon,
+                            style: Style(color: Colors.red).text2(context),
+                          )),
+                    )
                   : FutureBuilder(
                       future: barcode,
                       builder: (context, snapshot) {
@@ -151,12 +154,13 @@ class _CouponScreenState extends State<CouponScreen> {
                                 ConnectionState.waiting ||
                             snapshot.hasError)
                           return Container(
+                              height: 70,
                               color: MediaQuery.platformBrightnessOf(context) ==
                                       Brightness.dark
                                   ? Colors.black
                                   : Colors.grey[200],
                               padding: EdgeInsets.only(bottom: 20),
-                              alignment: Alignment.bottomCenter,
+                              alignment: Alignment.center,
                               child: PlatformCircularProgressIndicator());
                         else {
                           if (snapshot.data['exist'] &&
@@ -166,8 +170,10 @@ class _CouponScreenState extends State<CouponScreen> {
                           else if (snapshot.data['used'])
                             return Container(
                               height: 100,
+                              color: Theme.of(context).scaffoldBackgroundColor,
                               padding: EdgeInsets.only(bottom: 30),
                               child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Timer(
                                       AppLocalizations.of(context)

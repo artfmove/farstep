@@ -9,7 +9,7 @@ class PlaceSliverInfo extends StatelessWidget {
   AppLocalizations loc;
 
   _runSite(String url) async {
-    if (await canLaunch(url)) {
+    if (await canLaunch('https://$url')) {
       await launch('https://$url');
     } else {
       print('urlError');

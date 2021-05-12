@@ -26,10 +26,10 @@ class _AuthVerifyState extends State<AuthVerify> {
           builder: (ctx) => PlatformAlertDialog(
                 title: Text(
                   loc.goesWrong,
-                  style: Style().text3(context),
+                  style: Style().dialogTitle(context),
                 ),
-                content:
-                    Text(loc.emailNotVerified, style: Style().text4(context)),
+                content: Text(loc.emailNotVerified,
+                    style: Style().dialogContent(context)),
                 actions: [
                   PlatformDialogAction(
                       child: Text(
@@ -61,7 +61,7 @@ class _AuthVerifyState extends State<AuthVerify> {
     }
   }
 
-  void _breakConfirmation() async {
+  void _breakConfirmation(context) async {
     LoadingDialog.showLoad(context);
     final response = await Auth().signOut(context);
     LoadingDialog.dispLoad();
@@ -92,33 +92,32 @@ class _AuthVerifyState extends State<AuthVerify> {
 
   @override
   Widget build(BuildContext context) {
-    print(MediaQuery.of(context).size.width);
     loc = AppLocalizations.of(context);
     final width = MediaQuery.of(context).size.width;
     return PlatformScaffold(
-      appBar: PlatformAppBar(
-        title: Text(
-          loc.confirmation,
-          style: Style().appBar(context),
-        ),
-      ),
+      // appBar: PlatformAppBar(
+      //   title: Text(
+      //     loc.confirmation,
+      //     style: Style().appBar(context),
+      //   ),
+      // ),
       body: Stack(
         alignment: Alignment.bottomCenter,
         children: [
           Center(
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
                     loc.verifyEmailSent,
-                    style: Style().text3(context),
-                    maxLines: 2,
+                    style: Style().text2(context),
+                    //maxLines: 2,
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(
-                    height: 20,
+                    height: 50,
                   ),
                   outlButton(Colors.red, _tryAuth, loc.alreadyAccepted,
                       width > 360 ? 15.0 : 11.0)
@@ -130,7 +129,7 @@ class _AuthVerifyState extends State<AuthVerify> {
             padding: const EdgeInsets.only(bottom: 18.0),
             child: outlButton(
                 Theme.of(context).scaffoldBackgroundColor,
-                _breakConfirmation,
+                () => _breakConfirmation(context),
                 loc.breakConfirmation,
                 width > 360 ? 14.0 : 11.0),
           ),

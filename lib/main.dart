@@ -45,7 +45,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                 color: Colors.black,
               ),
             ),
-            splashColor: Colors.grey[900],
+            splashColor: Colors.grey[100],
             iconTheme: IconThemeData(color: Colors.red),
             bottomNavigationBarTheme: BottomNavigationBarThemeData(
                 selectedItemColor: Colors.red,
@@ -59,7 +59,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         .copyWith(
             primaryColor: Colors.red[400],
             accentColor: Colors.red,
-            splashColor: Colors.grey[200],
+            splashColor: Colors.grey[100],
             scaffoldBackgroundColor: Colors.black,
             iconTheme: IconThemeData(color: Colors.red),
             appBarTheme: AppBarTheme(

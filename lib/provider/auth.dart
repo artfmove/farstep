@@ -119,6 +119,7 @@ class Auth with ChangeNotifier {
   Future<bool> signOut(BuildContext context) async {
     bool success = true;
     user = getCurrentUser;
+    print(user);
     if (user == null)
       Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
           platformPageRoute(
@@ -137,10 +138,12 @@ class Auth with ChangeNotifier {
         .catchError((e) => success = false);
     if (!success) return success;
 
-    Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
-        platformPageRoute(
-            context: context, builder: (_) => AuthenticationScreen()),
-        (route) => false);
+    Future.delayed(Duration(milliseconds: 300)).then((value) {
+      Navigator.of(context).pushAndRemoveUntil(
+          platformPageRoute(
+              context: context, builder: (_) => AuthenticationScreen()),
+          (route) => false);
+    });
     return success;
   }
 

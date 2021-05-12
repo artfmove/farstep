@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 
 class FeedItem extends StatefulWidget {
   final Feed feed;
-  FeedItem(this.feed);
+  FeedItem(this.feed, {Key key}) : super(key: key);
 
   @override
   _FeedItemState createState() => _FeedItemState();

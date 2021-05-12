@@ -7,6 +7,7 @@ import './reset_password.dart';
 import '../screen/auth_verify.dart';
 import './landing.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 
 class AuthenticationScreen extends StatefulWidget {
   @override
@@ -278,19 +279,25 @@ class _AuthenticationScreenState extends State<AuthenticationScreen>
                                   ),
                                   FadeTransition(
                                     opacity: _opacityAnimation,
-                                    child: TextFormField(
-                                        onFieldSubmitted: (_) => node.unfocus(),
-                                        obscureText: true,
-                                        textInputAction: TextInputAction.done,
-                                        decoration: Style.textField(
-                                            loc.confirmPassword, context),
-                                        onChanged: (value) =>
-                                            authData['confirmedPassword'] =
-                                                value,
-                                        validator: (v) => !isLogin &&
-                                                v != authData['password']
-                                            ? loc.differentPasswords
-                                            : null),
+                                    child: isLogin
+                                        ? Container(
+                                            height: 50,
+                                          )
+                                        : TextFormField(
+                                            onFieldSubmitted: (_) =>
+                                                node.unfocus(),
+                                            obscureText: true,
+                                            textInputAction:
+                                                TextInputAction.done,
+                                            decoration: Style.textField(
+                                                loc.confirmPassword, context),
+                                            onChanged: (value) =>
+                                                authData['confirmedPassword'] =
+                                                    value,
+                                            validator: (v) => !isLogin &&
+                                                    v != authData['password']
+                                                ? loc.differentPasswords
+                                                : null),
                                   ),
                                 ],
                               ),
@@ -304,10 +311,10 @@ class _AuthenticationScreenState extends State<AuthenticationScreen>
                     ),
                     if (isMailSelected)
                       Container(
-                        padding: EdgeInsets.only(top: 10),
+                        padding: EdgeInsets.only(top: 20),
                         child: SlideTransition(
                             position: _slideAnimation,
-                            child: TextButton(
+                            child: CupertinoButton(
                               onPressed: () {
                                 _authenticate();
                               },
@@ -340,7 +347,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen>
                               ),
                             ),
                           ),
-                          TextButton(
+                          CupertinoButton(
                             child: Text(
                               loc.forgotPassword,
                               style: Style(color: Colors.red).text4(context),
